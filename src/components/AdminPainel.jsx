@@ -74,16 +74,7 @@ function AdminPainel({ onSair }) {
       return
     }
 
-    const { dados, error: erroRecarregar } = await adminListarResultados()
-    setLinhas(dados)
-
-    if (erroRecarregar) {
-      setErro(erroRecarregar)
-    } else if (dados.some((linha) => linha.id === id)) {
-      setErro(
-        `${nome} continua cadastrado. O Supabase não permitiu a exclusão — confira a policy de DELETE em "inscricoes" no SQL Editor.`
-      )
-    }
+    setLinhas((anteriores) => anteriores.filter((linha) => linha.id !== id))
   }
 
   async function handleExcluirTudo() {
@@ -99,16 +90,7 @@ function AdminPainel({ onSair }) {
       return
     }
 
-    const { dados, error: erroRecarregar } = await adminListarResultados()
-    setLinhas(dados)
-
-    if (erroRecarregar) {
-      setErro(erroRecarregar)
-    } else if (dados.length > 0) {
-      setErro(
-        'Alguns candidatos continuam cadastrados. O Supabase não permitiu excluir tudo — confira a policy de DELETE em "inscricoes" no SQL Editor.'
-      )
-    }
+    setLinhas([])
   }
 
   function handleExportar() {
