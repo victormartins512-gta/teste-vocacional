@@ -6,18 +6,21 @@ import Resultado from './components/Resultado'
 import AdminApp from './AdminApp'
 import { salvarSessao, limparSessao, lerSessao } from './lib/armazenamentoLocal'
 
-// Se o aluno recarregar a página no meio do teste, retoma de onde parou.
+// Se o aluno recarregar a página no meio do teste (ou já na tela de resultado), retoma de onde parou.
 function sessaoResumivel() {
   const sessao = lerSessao()
-  return sessao?.tela === 'teste' && sessao.inscricaoId ? sessao : null
+  if (sessao?.tela === 'teste' && sessao.inscricaoId) return sessao
+  if (sessao?.tela === 'resultado' && sessao.resultado) return sessao
+  return null
 }
 
 function App() {
-  const [tela, setTela] = useState(() =>
-    window.location.pathname === '/admin' ? 'admin' : sessaoResumivel() ? 'teste' : 'boasVindas'
-  )
+  const [tela, setTela] = useState(() => {
+    if (window.location.pathname === '/admin') return 'admin'
+    return sessaoResumivel()?.tela ?? 'boasVindas'
+  })
   const [inscricaoId, setInscricaoId] = useState(() => sessaoResumivel()?.inscricaoId ?? null)
-  const [resultado, setResultado] = useState(null)
+  const [resultado, setResultado] = useState(() => sessaoResumivel()?.resultado ?? null)
 
   function reiniciar() {
     limparSessao()
@@ -52,6 +55,7 @@ function App() {
         inscricaoId={inscricaoId}
         onTesteFinalizado={(resultadoCalculado) => {
           setResultado(resultadoCalculado)
+          salvarSessao({ tela: 'resultado', resultado: resultadoCalculado })
           setTela('resultado')
         }}
         onReiniciar={reiniciar}
