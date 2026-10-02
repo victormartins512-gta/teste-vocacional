@@ -157,12 +157,27 @@ function TesteVocacional({ inscricaoId, onTesteFinalizado, onReiniciar }) {
     <div className="flex h-screen flex-col">
       <header className="shrink-0 border-b border-linha bg-bruma px-6 pt-6">
         <div className="mx-auto max-w-[720px]">
-          <BarraProgresso
-            blocoAtual={blocoAtual + 1}
-            totalBlocos={TOTAL_BLOCOS}
-            perguntaInicial={primeiraPergunta}
-            perguntaFinal={ultimaPergunta}
-          />
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <BarraProgresso
+                blocoAtual={blocoAtual + 1}
+                totalBlocos={TOTAL_BLOCOS}
+                perguntaInicial={primeiraPergunta}
+                perguntaFinal={ultimaPergunta}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                if (window.confirm('Recomeçar do início? Suas respostas deste teste serão perdidas.')) {
+                  onReiniciar()
+                }
+              }}
+              className="shrink-0 text-sm text-grafite/60 underline-offset-2 hover:underline"
+            >
+              Recomeçar
+            </button>
+          </div>
         </div>
       </header>
 
