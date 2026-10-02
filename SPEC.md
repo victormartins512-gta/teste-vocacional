@@ -90,7 +90,7 @@ Criar também um `.env.example` com as mesmas chaves vazias.
 |---|---|---|---|---|
 | Nome completo do candidato | `nome` | text | sim | Mínimo 2 palavras |
 | Data de nascimento | `data_nascimento` | date | não | Formato DD/MM/AAAA com máscara; se preenchida, precisa ser válida |
-| CPF | `cpf` | text | sim | Máscara 000.000.000-00 + validação de dígitos |
+| CPF | `cpf` | text | não | Máscara 000.000.000-00, sem validação de dígitos nem exigência de ser único |
 | WhatsApp (com DDD) | `whatsapp` | text | sim | Máscara (99) 99999-9999 |
 | Celular (com DDD) | `celular` | text | sim | Máscara (99) 99999-9999 |
 | E-mail | `email` | text | não | Validação de formato; se preenchido, precisa ser válido |
@@ -358,7 +358,7 @@ create table public.inscricoes (
   id uuid primary key,                   -- gerado no front com crypto.randomUUID()
   nome text not null,
   data_nascimento date,
-  cpf text not null unique,
+  cpf text,
   whatsapp text not null,
   celular text not null,
   email text,
@@ -487,9 +487,8 @@ teste-vocacional/
 
 **Etapa 2 — Ficha + gravação**
 - Tela 2 completa: todos os campos da seção 4.1, validações, select de cursos (com grupos), select de turno e modalidade.
-- Validação de CPF (dígitos verificadores).
+- CPF é opcional, sem validação de dígitos e sem exigência de ser único (permite múltiplos cadastros com o mesmo CPF).
 - Máscaras de data, CPF e telefone.
-- CPF é único: se já existe uma inscrição com o mesmo CPF, mostrar mensagem clara (não precisa se inscrever de novo) em vez de gravar duplicado.
 - Insert em `inscricoes` ao clicar em "Começar teste".
 - ✅ Validação: preencher a ficha e confirmar o registro na tabela `inscricoes` do Supabase (Table Editor).
 

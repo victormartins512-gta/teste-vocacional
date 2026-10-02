@@ -36,28 +36,6 @@ export function mascararCPF(valor) {
   return resultado
 }
 
-export function validarCPF(valor) {
-  const cpf = valor.replace(/\D/g, '')
-  if (cpf.length !== 11) return false
-  if (/^(\d)\1{10}$/.test(cpf)) return false
-
-  const calcularDigito = (base) => {
-    let soma = 0
-    let peso = base.length + 1
-    for (const char of base) {
-      soma += Number(char) * peso
-      peso -= 1
-    }
-    const resto = soma % 11
-    return resto < 2 ? 0 : 11 - resto
-  }
-
-  const digito1 = calcularDigito(cpf.slice(0, 9))
-  const digito2 = calcularDigito(cpf.slice(0, 9) + digito1)
-
-  return cpf === cpf.slice(0, 9) + String(digito1) + String(digito2)
-}
-
 export function mascararTelefone(valor) {
   const digitos = valor.replace(/\D/g, '').slice(0, 11)
   const ddd = digitos.slice(0, 2)

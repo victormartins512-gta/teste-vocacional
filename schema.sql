@@ -7,7 +7,7 @@ create table public.inscricoes (
   id uuid primary key,
   nome text not null,
   data_nascimento date,
-  cpf text not null unique,
+  cpf text,
   whatsapp text not null,
   celular text not null,
   email text,

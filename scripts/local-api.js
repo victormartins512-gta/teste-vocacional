@@ -117,9 +117,6 @@ app.post('/inscricoes', async (req, res) => {
     )
     res.status(201).json({ ok: true })
   } catch (err) {
-    if (err.code === '23505') {
-      return res.status(409).json({ error: 'Este CPF já está cadastrado.' })
-    }
     console.error(err)
     res.status(500).json({ error: err.message })
   }

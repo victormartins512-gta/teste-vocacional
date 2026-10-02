@@ -6,7 +6,6 @@ import {
   mascararData,
   validarData,
   mascararCPF,
-  validarCPF,
   mascararTelefone,
   validarTelefone,
   validarEmail,
@@ -74,9 +73,6 @@ function FichaCadastro({ onFichaSalva }) {
     if (campos.data_nascimento && !validarData(campos.data_nascimento)) {
       novosErros.data_nascimento = 'Informe uma data válida (DD/MM/AAAA).'
     }
-    if (!validarCPF(campos.cpf)) {
-      novosErros.cpf = 'CPF inválido.'
-    }
     if (!validarTelefone(campos.whatsapp)) {
       novosErros.whatsapp = 'Informe um WhatsApp válido com DDD.'
     }
@@ -117,11 +113,11 @@ function FichaCadastro({ onFichaSalva }) {
     const id = crypto.randomUUID()
     const agora = new Date().toISOString()
 
-    const { error, cpfDuplicado } = await inserirInscricao({
+    const { error } = await inserirInscricao({
       id,
       nome: campos.nome.trim(),
       data_nascimento: validarData(campos.data_nascimento),
-      cpf: campos.cpf,
+      cpf: campos.cpf || null,
       whatsapp: campos.whatsapp,
       celular: campos.celular,
       email: campos.email.trim() || null,
@@ -136,11 +132,7 @@ function FichaCadastro({ onFichaSalva }) {
     setEnviando(false)
 
     if (error) {
-      setErroEnvio(
-        cpfDuplicado
-          ? 'Este CPF já está cadastrado. Você não precisa preencher a ficha novamente.'
-          : 'Não foi possível salvar sua ficha. Verifique os dados e tente novamente.'
-      )
+      setErroEnvio('Não foi possível salvar sua ficha. Verifique os dados e tente novamente.')
       return
     }
 
@@ -206,7 +198,7 @@ function FichaCadastro({ onFichaSalva }) {
             <Campo
               label={
                 <label htmlFor="cpf" className={rotuloLabel}>
-                  CPF
+                  CPF <span className="text-grafite/50">(opcional)</span>
                 </label>
               }
               erro={erros.cpf}

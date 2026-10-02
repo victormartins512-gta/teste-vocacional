@@ -20,11 +20,11 @@ async function postLocal(caminho, dados) {
 
 export async function inserirInscricao(dados) {
   if (localApiUrl) {
-    const { error, status } = await postLocal('/inscricoes', dados)
-    return { error, cpfDuplicado: status === 409 }
+    const { error } = await postLocal('/inscricoes', dados)
+    return { error }
   }
   const { error } = await supabase.from('inscricoes').insert(dados)
-  return { error: error?.message ?? null, cpfDuplicado: error?.code === '23505' }
+  return { error: error?.message ?? null }
 }
 
 export async function inserirRespostaTeste(dados) {
