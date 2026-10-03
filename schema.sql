@@ -7,7 +7,7 @@ create table public.inscricoes (
   id uuid primary key,
   nome text not null,
   data_nascimento date,
-  cpf text,
+  cpf text not null,
   whatsapp text not null,
   celular text not null,
   email text,
@@ -44,6 +44,17 @@ create policy "anon pode inserir inscricao"
 
 create policy "anon pode inserir respostas"
   on public.respostas_teste for insert to anon
+  with check (true);
+
+-- Mesmas policies também para "authenticated": se o navegador tiver uma sessão de
+-- admin ativa (por exemplo, alguém testou o /admin na mesma aba), o cadastro do
+-- aluno não pode quebrar por causa disso.
+create policy "authenticated pode inserir inscricao"
+  on public.inscricoes for insert to authenticated
+  with check (consentimento = true);
+
+create policy "authenticated pode inserir respostas"
+  on public.respostas_teste for insert to authenticated
   with check (true);
 
 -- Área do proprietário (login via Supabase Auth): consulta e exclui.

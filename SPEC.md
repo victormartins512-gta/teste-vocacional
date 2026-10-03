@@ -90,7 +90,7 @@ Criar também um `.env.example` com as mesmas chaves vazias.
 |---|---|---|---|---|
 | Nome completo do candidato | `nome` | text | sim | Mínimo 2 palavras |
 | Data de nascimento | `data_nascimento` | date | não | Formato DD/MM/AAAA com máscara; se preenchida, precisa ser válida |
-| CPF | `cpf` | text | não | Máscara 000.000.000-00, sem validação de dígitos nem exigência de ser único |
+| CPF | `cpf` | text | sim | Máscara 000.000.000-00 + validação de dígitos, exceto `999.999.999-99` (valor padrão para quem não sabe o CPF); não precisa ser único |
 | WhatsApp (com DDD) | `whatsapp` | text | sim | Máscara (99) 99999-9999 |
 | Celular (com DDD) | `celular` | text | sim | Máscara (99) 99999-9999 |
 | E-mail | `email` | text | não | Validação de formato; se preenchido, precisa ser válido |
@@ -358,7 +358,7 @@ create table public.inscricoes (
   id uuid primary key,                   -- gerado no front com crypto.randomUUID()
   nome text not null,
   data_nascimento date,
-  cpf text,
+  cpf text not null,
   whatsapp text not null,
   celular text not null,
   email text,
@@ -395,6 +395,17 @@ create policy "anon pode inserir inscricao"
 
 create policy "anon pode inserir respostas"
   on public.respostas_teste for insert to anon
+  with check (true);
+
+-- Mesmas policies também para "authenticated": se o navegador tiver uma sessão de
+-- admin ativa (por exemplo, alguém testou o /admin na mesma aba), o cadastro do
+-- aluno não pode quebrar por causa disso.
+create policy "authenticated pode inserir inscricao"
+  on public.inscricoes for insert to authenticated
+  with check (consentimento = true);
+
+create policy "authenticated pode inserir respostas"
+  on public.respostas_teste for insert to authenticated
   with check (true);
 
 -- Área do proprietário (seção 3-B): só existe um usuário admin, criado manualmente
@@ -487,7 +498,7 @@ teste-vocacional/
 
 **Etapa 2 — Ficha + gravação**
 - Tela 2 completa: todos os campos da seção 4.1, validações, select de cursos (com grupos), select de turno e modalidade.
-- CPF é opcional, sem validação de dígitos e sem exigência de ser único (permite múltiplos cadastros com o mesmo CPF).
+- CPF obrigatório e validado (dígitos verificadores), com uma exceção: `999.999.999-99` é aceito sem validar — valor padrão combinado para quem não sabe o CPF. Não precisa ser único (permite múltiplos cadastros com o mesmo CPF).
 - Máscaras de data, CPF e telefone.
 - Insert em `inscricoes` ao clicar em "Começar teste".
 - ✅ Validação: preencher a ficha e confirmar o registro na tabela `inscricoes` do Supabase (Table Editor).

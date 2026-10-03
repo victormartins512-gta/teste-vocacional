@@ -6,6 +6,8 @@ import {
   mascararData,
   validarData,
   mascararCPF,
+  validarCPF,
+  CPF_DESCONHECIDO,
   mascararTelefone,
   validarTelefone,
   validarEmail,
@@ -73,6 +75,11 @@ function FichaCadastro({ onFichaSalva }) {
     if (campos.data_nascimento && !validarData(campos.data_nascimento)) {
       novosErros.data_nascimento = 'Informe uma data válida (DD/MM/AAAA).'
     }
+    if (!campos.cpf) {
+      novosErros.cpf = 'Informe o CPF.'
+    } else if (!validarCPF(campos.cpf)) {
+      novosErros.cpf = 'CPF inválido.'
+    }
     if (!validarTelefone(campos.whatsapp)) {
       novosErros.whatsapp = 'Informe um WhatsApp válido com DDD.'
     }
@@ -117,7 +124,7 @@ function FichaCadastro({ onFichaSalva }) {
       id,
       nome: campos.nome.trim(),
       data_nascimento: validarData(campos.data_nascimento),
-      cpf: campos.cpf || null,
+      cpf: campos.cpf,
       whatsapp: campos.whatsapp,
       celular: campos.celular,
       email: campos.email.trim() || null,
@@ -198,7 +205,7 @@ function FichaCadastro({ onFichaSalva }) {
             <Campo
               label={
                 <label htmlFor="cpf" className={rotuloLabel}>
-                  CPF <span className="text-grafite/50">(opcional)</span>
+                  CPF
                 </label>
               }
               erro={erros.cpf}
@@ -211,6 +218,9 @@ function FichaCadastro({ onFichaSalva }) {
                 onChange={(e) => atualizarCampo('cpf', mascararCPF(e.target.value))}
                 className={inputClasses(erros.cpf)}
               />
+              <p className="mt-1.5 text-xs text-grafite/50">
+                Não sabe o CPF? Use {CPF_DESCONHECIDO}
+              </p>
             </Campo>
           </div>
         </Secao>
