@@ -411,8 +411,24 @@ create policy "authenticated pode inserir respostas"
 -- Área do proprietário (seção 3-B): só existe um usuário admin, criado manualmente
 -- no Supabase Auth (Authentication > Users), sem cadastro público. Por isso liberar
 -- para todo o papel "authenticated" é seguro aqui.
+-- O SELECT é necessário mesmo só usando a view pra listar: um DELETE/UPDATE com
+-- filtro (ex.: id=eq.X) só "enxerga" a linha pra agir se também houver uma policy
+-- de leitura na tabela base — sem isso, o filtro não encontra nada e a operação
+-- silenciosamente afeta 0 linhas, sem erro.
+create policy "authenticated pode ler inscricoes"
+  on public.inscricoes for select to authenticated
+  using (true);
+
+create policy "authenticated pode ler respostas"
+  on public.respostas_teste for select to authenticated
+  using (true);
+
 create policy "authenticated pode excluir inscricao"
   on public.inscricoes for delete to authenticated
+  using (true);
+
+create policy "authenticated pode excluir respostas"
+  on public.respostas_teste for delete to authenticated
   using (true);
 
 -- View para consulta/exportação (usada na área do proprietário)
