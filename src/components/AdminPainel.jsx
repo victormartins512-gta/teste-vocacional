@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { perfis } from '../data/teste'
 import { adminListarResultados, adminExcluirInscricao, adminExcluirTudo, adminLogout } from '../lib/admin'
 import { exportarCsv } from '../lib/exportarCsv'
 
@@ -16,7 +15,7 @@ function formatarContagem(contagem) {
 }
 
 function nomePerfil(letra) {
-  return letra ? perfis[letra]?.nome ?? letra : '—'
+  return letra ? `Perfil ${letra}` : '—'
 }
 
 const COLUNAS_CSV = [

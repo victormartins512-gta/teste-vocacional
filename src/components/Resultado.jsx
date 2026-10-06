@@ -2,9 +2,27 @@ import { perfis, perguntas } from '../data/teste'
 import EtapaIndicador from './EtapaIndicador'
 
 function nomesDosPerfis(letras) {
-  const nomes = letras.map((letra) => perfis[letra].nome)
+  const nomes = letras.map((letra) => `Perfil ${letra}`)
   if (nomes.length === 1) return nomes[0]
   return `${nomes.slice(0, -1).join(', ')} e ${nomes[nomes.length - 1]}`
+}
+
+function ListaChips({ titulo, itens }) {
+  return (
+    <div>
+      <p className="text-sm font-medium text-estacio-dark">{titulo}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {itens.map((item) => (
+          <span
+            key={item}
+            className="rounded-full border border-linha bg-white px-3 py-1 text-sm text-grafite"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function Resultado({ resultado, onVoltarInicio }) {
@@ -15,7 +33,7 @@ function Resultado({ resultado, onVoltarInicio }) {
     .filter((letra) => !perfisPrincipais.includes(letra))
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-dvh flex-col">
       <header className="shrink-0 border-b border-linha bg-bruma px-6 pt-6">
         <div className="mx-auto max-w-[760px]">
           <EtapaIndicador etapaAtual={4} rotulo="Resultado" />
@@ -35,16 +53,9 @@ function Resultado({ resultado, onVoltarInicio }) {
             {perfisPrincipais.map((letra) => (
               <div key={letra} className="border-l-2 border-bussola pl-5 sm:pl-6">
                 <p className="text-grafite">{perfis[letra].descricao}</p>
-                <p className="mt-3 text-sm font-medium text-estacio-dark">Cursos sugeridos</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {perfis[letra].cursos.map((curso) => (
-                    <span
-                      key={curso}
-                      className="rounded-full border border-linha bg-white px-3 py-1 text-sm text-grafite"
-                    >
-                      {curso}
-                    </span>
-                  ))}
+                <div className="mt-4 space-y-4">
+                  <ListaChips titulo="Carreiras mais apropriadas" itens={perfis[letra].carreiras} />
+                  <ListaChips titulo="Graduações recomendadas" itens={perfis[letra].graduacoes} />
                 </div>
               </div>
             ))}
@@ -58,7 +69,7 @@ function Resultado({ resultado, onVoltarInicio }) {
               <div className="space-y-4">
                 {perfisComplementares.map((letra) => (
                   <div key={letra}>
-                    <p className="font-medium text-estacio-dark">{perfis[letra].nome}</p>
+                    <p className="font-medium text-estacio-dark">Perfil {letra}</p>
                     <p className="mt-1 text-sm text-grafite">{perfis[letra].descricao}</p>
                   </div>
                 ))}
@@ -73,7 +84,7 @@ function Resultado({ resultado, onVoltarInicio }) {
             <div className="space-y-3">
               {ranking.map(([letra, pontos]) => (
                 <div key={letra} className="flex items-center gap-4">
-                  <span className="w-28 shrink-0 text-sm text-grafite">{perfis[letra].nome}</span>
+                  <span className="w-28 shrink-0 text-sm text-grafite">Perfil {letra}</span>
                   <div className="h-2 flex-1 rounded-full bg-linha">
                     <div
                       className="h-2 rounded-full bg-estacio-blue"
@@ -84,6 +95,24 @@ function Resultado({ resultado, onVoltarInicio }) {
                 </div>
               ))}
             </div>
+          </div>
+
+          <div className="mt-10 mb-4 border-t border-linha pt-8 text-center">
+            <img
+              src="/logo-estacio-castanhal.png"
+              alt="Estácio Castanhal"
+              className="mx-auto h-12 w-auto"
+            />
+            <p className="mt-3 text-sm font-medium text-estacio-dark">
+              Educação de qualidade em uma das maiores universidades do Brasil.
+            </p>
+            <p className="mx-auto mt-2 max-w-[600px] text-xs leading-relaxed text-grafite">
+              Nesses 55 anos de história, mantivemos a tradição de acreditar no poder
+              transformador da aprendizagem, melhorando sempre nossa metodologia e ferramentas de
+              ensino. Mais de 500 mil estudantes matriculados em todo o Brasil, 70% de estudantes
+              empregados, +35 cursos avaliados com nota máxima no MEC e +90 mil vagas disponíveis
+              para alunos em todo o Brasil.
+            </p>
           </div>
         </div>
       </div>
