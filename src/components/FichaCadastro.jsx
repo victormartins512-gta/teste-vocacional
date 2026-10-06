@@ -7,7 +7,6 @@ import {
   validarData,
   mascararCPF,
   validarCPF,
-  CPF_DESCONHECIDO,
   mascararTelefone,
   validarTelefone,
   validarEmail,
@@ -149,7 +148,7 @@ function FichaCadastro({ onFichaSalva }) {
   const rotuloLabel = 'mb-1.5 block text-[0.9375rem] font-medium text-grafite'
 
   return (
-    <form onSubmit={handleSubmit} className="flex h-screen flex-col">
+    <form onSubmit={handleSubmit} className="flex h-dvh flex-col">
       <header className="shrink-0 border-b border-linha bg-bruma px-6 pt-6">
         <div className="mx-auto max-w-[760px]">
           <EtapaIndicador etapaAtual={2} rotulo="Ficha de cadastro" />
@@ -218,9 +217,6 @@ function FichaCadastro({ onFichaSalva }) {
                 onChange={(e) => atualizarCampo('cpf', mascararCPF(e.target.value))}
                 className={inputClasses(erros.cpf)}
               />
-              <p className="mt-1.5 text-xs text-grafite/50">
-                Não sabe o CPF? Use {CPF_DESCONHECIDO}
-              </p>
             </Campo>
           </div>
         </Secao>
