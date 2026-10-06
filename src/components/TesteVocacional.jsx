@@ -134,7 +134,7 @@ function TesteVocacional({ inscricaoId, onTesteFinalizado, onReiniciar }) {
 
   if (inscricaoInvalida) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-[480px] flex-col items-center justify-center px-6 text-center">
+      <div className="mx-auto flex min-h-dvh max-w-[480px] flex-col items-center justify-center px-6 text-center">
         <h1 className="font-display text-2xl font-semibold text-estacio-dark">
           Sua inscrição não foi encontrada
         </h1>
@@ -154,7 +154,7 @@ function TesteVocacional({ inscricaoId, onTesteFinalizado, onReiniciar }) {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-dvh flex-col">
       <header className="shrink-0 border-b border-linha bg-bruma px-6 pt-6">
         <div className="mx-auto max-w-[720px]">
           <div className="flex items-start justify-between gap-4">

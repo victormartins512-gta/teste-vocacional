@@ -25,7 +25,7 @@ function AdminLogin({ onEntrar }) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6">
+    <div className="flex min-h-dvh items-center justify-center px-6">
       <form onSubmit={handleSubmit} className="w-full max-w-[380px] space-y-5">
         <div>
           <h1 className="font-display text-2xl font-semibold text-estacio-dark">
